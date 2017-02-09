@@ -11,16 +11,22 @@ class ChatBar extends Component {
   this.props.postMessage(e.target.value)
  }
 }
-
 onEnterName = (e) => {
   if (e.key === "Enter") {
-    if (e.target.value){
-      this.props.updateName(e.target.value)
-    } else {
-      this.props.updateName("Anonymous")
+    if (this.props.state.currentUser.name === "Anonymous") {
+      if (e.target.value && e.target.value !== "Anonymous") {
+        this.props.updateName(e.target.value)
+      }
+    } else if (e.target.value !== this.props.state.currentUser.name) {
+      if (e.target.value === "") {
+       this.props.updateName("Anonymous")
+      } else {
+        this.props.updateName(e.target.value)
+      }
     }
   }
 }
+
 
   render() {
     console.log("Rendering <ChatBar/>");

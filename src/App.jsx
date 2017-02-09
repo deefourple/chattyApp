@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
+// import Notification from './Notification.jsx';
 
 var initialState = {
     currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
@@ -23,7 +24,11 @@ class App extends Component {
         this.setState({messages: parsedMessage.messages})
       break;
       case "incomingNotification":
-        this.setState({currentUser: {name: parsedMessage.messages[parsedMessage.messages.length -1].newName},
+        let old = parsedMessage.messages[parsedMessage.messages.length -1].oldName;
+        let newest = parsedMessage.messages[parsedMessage.messages.length -1].newName;
+        console.log("old: ", old);
+        console.log("new: ", newest);
+        this.setState({currentUser: {name: newest, oldName: old},
                       messages: parsedMessage.messages})
       break;
    }
@@ -71,34 +76,10 @@ class App extends Component {
         <h1>ChatFish</h1>
       </nav>
       <MessageList state={this.state}/>
-      <ChatBar updateName={this._onUpdateName} postMessage={this._postMessage} />
+      <ChatBar state={this.state} updateName={this._onUpdateName} postMessage={this._postMessage} />
       </div>
     );
   }
 }
 
 export default App;
-
-
-//client side websocket code
-
-// var ws = new WebSocket('ws://localhost:3000')
-// //inititalizing set up
-// ws.addEventListener('open', (event =>) {
-//   console.log('Connected to the server');
-// })
-
-// //or ws.onmessage = (message) => {}
-
-// ws.addEventListener('message', (message) => {
-//   console.log(`Received: ${message.data}`)
-// })
-
-// //listening on an error event
-// ws.addEventListener('error', (error) => {
-
-// })
-
-
-
-

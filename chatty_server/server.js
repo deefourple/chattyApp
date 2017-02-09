@@ -27,7 +27,6 @@ wss.on('connection', (ws) => {
   let getInitialMessages = {type: "initialMessages", messages: messages}
   ws.send(JSON.stringify(getInitialMessages));
   ws.on('message', (message) => {
-
     let parsedMessage = JSON.parse(message)
     switch(parsedMessage.type) {
       case "postMessage":
