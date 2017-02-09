@@ -1,24 +1,15 @@
 import React, {Component} from 'react';
+import Message from './Message.jsx';
 
 class MessageList extends Component {
   render() {
     console.log("Rendering <MessageList />");
     return (
       <div>
-        <nav>
-          <h1>ChatFish</h1>
-        </nav>
         <div id="message-list">
-        {this.props.messages.map(function(message){
-          return <div className="message" key={message.id}>
-
-            <span className="username">{message.username}</span>
-            <span className="content">{message.content}</span>
-          </div>
-        })}
-
+        {this.props.state.messages.map( message => <Message key={message.uuid} message={message}/>) }
           <div className="message system">
-            Anonymous1 changed their name to nomnom.
+            oldname changed their name to newName.
           </div>
         </div>
       </div>

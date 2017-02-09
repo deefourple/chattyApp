@@ -6,16 +6,28 @@ class ChatBar extends Component {
     this.setState = "";
   }
 
-  // _checkStatus = (e) => {
-  //   this.props.postMessage(e)
-  // }
+ onEnterMessage = (e) => {
+ if (e.key === 'Enter' && e.target.value !== "") {
+  this.props.postMessage(e.target.value)
+ }
+}
+
+onEnterName = (e) => {
+  if (e.key === "Enter") {
+    if (e.target.value){
+      this.props.updateName(e.target.value)
+    } else {
+      this.props.updateName("Anonymous")
+    }
+  }
+}
 
   render() {
     console.log("Rendering <ChatBar/>");
     return (
       <footer>
-        <input id="username" type="text" value={this.props.username} />
-        <input id="new-message" type="text" placeholder="Type a message and hit ENTER" onKeyPress={this.props.postMessage} />
+        <input id="username" type="text" placeholder="Your name(optional)" onKeyPress={this.onEnterName}/>
+        <input id="new-message" type="text" placeholder="Type a message and hit ENTER" onKeyPress={this.onEnterMessage} />
      </footer>
      )
   }
