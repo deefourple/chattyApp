@@ -27,7 +27,6 @@ onEnterName = (e) => {
   }
 }
 
-
   render() {
     console.log("Rendering <ChatBar/>");
     return (

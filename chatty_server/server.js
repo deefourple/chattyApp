@@ -22,10 +22,24 @@ wss.broadcast = (messageToBroadcast) => {
   });
 };
 
+ userCount = () => {
+  let onlineUsers = {type: "usersOnline", number: wss.clients.size};
+  wss.broadcast(onlineUsers)
+ }
+
+let randomColor = function() {
+  let selectionOfColors = ["#01c10b", "#f2e610", "#f28c10", "#ff0000", "#00fff2", "#f972f7"];
+  return selectionOfColors[Math.floor(Math.random() * 6 + 1)]
+}
+
 wss.on('connection', (ws) => {
+  userCount();
   console.log('Client connected');
+  //console.log("CLIENTS:", wss.clients.length) //Object.keys(wss.clients).length;
   let getInitialMessages = {type: "initialMessages", messages: messages}
   ws.send(JSON.stringify(getInitialMessages));
+  let getInitialColour = {type: "initialColor", color: randomColor()}
+  ws.send(JSON.stringify(getInitialColour));
   ws.on('message', (message) => {
     let parsedMessage = JSON.parse(message)
     switch(parsedMessage.type) {
@@ -34,7 +48,8 @@ wss.on('connection', (ws) => {
           type: "incomingMessage",
           uuid: uuid.v4(),
           name: parsedMessage.name,
-          content:parsedMessage.content
+          content:parsedMessage.content,
+          color: parsedMessage.color
         }
         messages = [...messages, messageToClient];
         let newMessage = {type: "incomingMessage", messages: messages}
@@ -55,7 +70,7 @@ wss.on('connection', (ws) => {
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => userCount());
 });
 
 

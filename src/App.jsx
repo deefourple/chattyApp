@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
-// import Notification from './Notification.jsx';
+import Nav from './Nav.jsx';
 
 var initialState = {
     currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
-    messages: []
+    messages: [],
+    userCount: 0,
+    color: "#3a85ff"
   }
 
 class App extends Component {
@@ -18,6 +20,13 @@ class App extends Component {
     console.log("Parsed Message Data -->", JSON.parse(message.data))
     let parsedMessage = JSON.parse(message.data);
     switch (parsedMessage.type){
+      case "initialColor":
+        console.log("setting initial color", parsedMessage.color)
+        this.setState({color: parsedMessage.color})
+        break;
+      case "usersOnline":
+        this.setState({userCount: parsedMessage.number})
+        break;
       case "initialMessages":
         this.setState({messages: parsedMessage.messages})
       case "incomingMessage":
@@ -62,7 +71,8 @@ class App extends Component {
     let sendAwayMessage = {
       type: "postMessage",
       name: this.state.currentUser.name,
-      content: content
+      content: content,
+      color: this.state.color
      }
      console.log("Sent message -->", sendAwayMessage)
      this.onMessageSend(sendAwayMessage)
@@ -72,10 +82,8 @@ class App extends Component {
   render() {
     return (
       <div>
-      <nav>
-        <h1>ChatFish</h1>
-      </nav>
-      <MessageList state={this.state}/>
+      <Nav count={this.state.userCount} />
+      <MessageList state={this.state} />
       <ChatBar state={this.state} updateName={this._onUpdateName} postMessage={this._postMessage} />
       </div>
     );
