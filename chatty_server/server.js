@@ -7,11 +7,9 @@ const PORT = 4000;
 var messages = [];
 
 const server = express()
-   // Make the express server serve static assets (html, javascript, css) from the /public folder
   .use(express.static('public'))
   .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
 
-// Create the WebSockets server
 const wss = new SocketServer.Server({ server });
 
 wss.broadcast = (messageToBroadcast) => {
@@ -28,8 +26,8 @@ wss.broadcast = (messageToBroadcast) => {
  }
 
 let randomColor = function() {
-  let selectionOfColors = ["#01c10b", "#f2e610", "#f28c10", "#ff0000", "#00fff2", "#f972f7"];
-  return selectionOfColors[Math.floor(Math.random() * 6 + 1)]
+  let selectionOfColors = ["#01c10b", "#f2e610", "#f28c10", "#ff0000", "#00fff2", "#f972f7", "#878787"];
+  return selectionOfColors[Math.floor(Math.random() * 6) + 1]
 }
 
 wss.on('connection', (ws) => {
@@ -69,21 +67,5 @@ wss.on('connection', (ws) => {
     }
   });
 
-  // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => userCount());
 });
-
-
-
-//ROB LECTURE NOTES
-//set the app up
-//const wss = new WebSocket.Server({server: app})
-// define first event
-// wss is the ability to access everybody, ws is who youre currently talking to
-
-// wss.on('connection', (ws) => {
-//   console.log("Check if the socket is working")
-//   ws.send("Hello")
-
-//   ws.on('close', () => console.log('Client left'))
-// })
