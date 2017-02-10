@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+
+
 const Message = ({color, message}) =>
 
 <div className="message" key={message.id}>
