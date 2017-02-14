@@ -3,7 +3,7 @@ import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 import Nav from './Nav.jsx';
 
-var initialState = {
+let initialState = {
     currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
     messages: [],
     userCount: 0,
@@ -37,7 +37,7 @@ class App extends Component {
         let newest = parsedMessage.messages[parsedMessage.messages.length -1].newName;
         console.log("old: ", old);
         console.log("new: ", newest);
-        this.setState({currentUser: {name: newest, oldName: old},
+        this.setState({currentUser: {name: this.state.currentUser.name, oldName: old},
                       messages: parsedMessage.messages})
       break;
    }
@@ -60,11 +60,7 @@ class App extends Component {
     newName: name
     }
     this.onMessageSend(nameToServer)
-    if (name) {
-      this.setState({currentUser: {name: name},})
-    } else {
-      this.setState({currentUser: {name: "Anonymous"}})
-    }
+    this.setState({currentUser: {name: name},})
   }
 
   _postMessage = (content) => {
